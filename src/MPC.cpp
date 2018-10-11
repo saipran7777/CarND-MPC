@@ -20,7 +20,7 @@ double dt = 0.1; // The T=1s
 //
 // This is the length from front to CoG that has a similar radius.
 const double Lf = 2.67;
-const double ref_v = 40;
+const double ref_v = 45;
 const double ref_cte = 0;
 const double ref_epsi = 0;
 
@@ -99,6 +99,10 @@ class FG_eval {
       // Only consider the actuation at time t.
       AD<double> delta0 = vars[delta_start + t - 1];
       AD<double> a0 = vars[a_start + t - 1];
+      if (t > 1) {   // to account for latency
+        a0 = vars[a_start + t - 2];
+        delta0 = vars[delta_start + t - 2];
+      }
 
       AD<double> f0 = coeffs[0] + coeffs[1] * x0+ coeffs[2]* CppAD::pow(x0,2)+coeffs[3]*CppAD::pow(x0,3) ;
       AD<double> psides0 = CppAD::atan(3*coeffs[3]*CppAD::pow(x0,2)+2*coeffs[2]*x0+coeffs[1]);
@@ -226,7 +230,7 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
 
   // Cost
   auto cost = solution.obj_value;
-  std::cout << "Cost " << cost << std::endl;
+  //std::cout << "Cost " << cost << std::endl;
 
   // TODO: Return the first actuator values. The variables can be accessed with
   // `solution.x[i]`.
