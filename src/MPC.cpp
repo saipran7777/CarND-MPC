@@ -100,8 +100,8 @@ class FG_eval {
       AD<double> delta0 = vars[delta_start + t - 1];
       AD<double> a0 = vars[a_start + t - 1];
       if (t > 1) {   // to account for latency
-        a0 = vars[a_start + t - 2];
-        delta0 = vars[delta_start + t - 2];
+        AD<double> a0 = vars[a_start + t - 2];
+        AD<double> delta0 = vars[delta_start + t - 2];
       }
 
       AD<double> f0 = coeffs[0] + coeffs[1] * x0+ coeffs[2]* CppAD::pow(x0,2)+coeffs[3]*CppAD::pow(x0,3) ;
@@ -229,7 +229,7 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
   ok &= solution.status == CppAD::ipopt::solve_result<Dvector>::success;
 
   // Cost
-  auto cost = solution.obj_value;
+  //auto cost = solution.obj_value;
   //std::cout << "Cost " << cost << std::endl;
 
   // TODO: Return the first actuator values. The variables can be accessed with
