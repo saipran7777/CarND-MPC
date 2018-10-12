@@ -20,7 +20,7 @@ double dt = 0.1; // The T=1s
 //
 // This is the length from front to CoG that has a similar radius.
 const double Lf = 2.67;
-const double ref_v = 45;
+const double ref_v = 30;
 const double ref_cte = 0;
 const double ref_epsi = 0;
 
@@ -62,7 +62,7 @@ class FG_eval {
     for (unsigned int t = 0; t < N - 1; t++) {
       fg[0] += 5 * CppAD::pow(vars[delta_start + t], 2);
       fg[0] += 5 * CppAD::pow(vars[a_start + t], 2);
-      fg[0] += 700*CppAD::pow(vars[delta_start + t] * vars[v_start+t], 2); //adjusting steering acc to velocity
+      fg[0] += 700 * CppAD::pow(vars[delta_start + t] * vars[v_start+t], 2); //adjusting steering acc to velocity
     }
 
     // Minimize the value gap between sequential actuations.
